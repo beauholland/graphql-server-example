@@ -1,6 +1,9 @@
 const { ApolloServer, gql } = require('apollo-server');
-
+const fs = require('fs'); // file system
 const db = require('./db'); // mock data
+
+const typeDefs = fs.readFileSync('./schema.graphql', { encoding: 'utf-8' });
+const resolvers = require('./resolvers');
 
 // This is a (sample) collection of books we'll be able to query
 // the GraphQL server for.  A more complete example might fetch
@@ -16,33 +19,33 @@ const books = [
   },
 ];
 
-// Type definitions define the "shape" of your data and specify
-// which ways the data can be fetched from the GraphQL server.
-const typeDefs = gql`
-  # Comments in GraphQL are defined with the hash (#) symbol.
+// // Type definitions define the "shape" of your data and specify
+// // which ways the data can be fetched from the GraphQL server.
+// const typeDefs = gql`
+//   # Comments in GraphQL are defined with the hash (#) symbol.
 
-  # This "Book" type can be used in other type declarations.
-  type Book {
-    id: ID
-    title: String
-    author: String
-  }
+//   # This "Book" type can be used in other type declarations.
+//   type Book {
+//     id: ID
+//     title: String
+//     author: String
+//   }
 
-  # The "Query" type is the root of all GraphQL queries.
-  # (A "Mutation" type will be covered later on.)
-  type Query {
-    books: [Book]
-  }
-`;
+//   # The "Query" type is the root of all GraphQL queries.
+//   # (A "Mutation" type will be covered later on.)
+//   type Query {
+//     books: [Book]
+//   }
+// `;
 
 // Resolvers define the technique for fetching the types in the
 // schema.  We'll retrieve books from the "books" array above.
-const resolvers = {
-  Query: {
-    books: () => db.books.list(),
-  },
+// const resolvers = {
+//   Query: {
+//     books: () => db.books.list(),
+//   },
 
-};
+// };
 
 // In the most basic sense, the ApolloServer can be started
 // by passing type definitions (typeDefs) and the resolvers
